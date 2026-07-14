@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>League B — Chuka Premier League</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="nav-slot"></div>
+
+<div class="hero" style="padding:48px 0">
+  <div class="wrap">
+    <div class="eyebrow">SEASON 2026</div>
+    <h1>League B</h1>
+    <div class="league-toggle" style="margin-top:20px">
+      <a href="league-a.html" style="color:var(--bone-dim);border-color:var(--line-on-dark)">League A</a>
+      <a href="league-b.html" class="active" style="color:var(--bone);border-color:var(--gold)">League B</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap section">
+  <div class="section-head"><h2 class="mt-0">Standings</h2></div>
+  <div id="standings-table"></div>
+</div>
+
+<div class="wrap section" style="padding-top:0">
+  <div class="grid-2">
+    <div>
+      <div class="section-head"><h2 class="mt-0">Fixtures &amp; Results</h2></div>
+      <div id="fixtures-list"></div>
+    </div>
+    <div>
+      <div class="section-head"><h2 class="mt-0">Top Scorers</h2></div>
+      <div id="scorers-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="footer-slot"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="standings.js"></script>
+<script src="fixtures.js"></script>
+<script src="nav.js"></script>
+<script>
+(async () => {
+  const [standings, fixtures, stats] = await Promise.all([
+    CPL_DATA.getStandings('B'), CPL_DATA.getFixtures('B'), CPL_DATA.getPlayerStats('B'),
+  ]);
+  renderStandingsTable(standings, document.getElementById('standings-table'), { qualifySpots: 2 });
+  renderFixtureList(fixtures, document.getElementById('fixtures-list'));
+  renderTopScorers(stats, document.getElementById('scorers-list'));
+})();
+</script>
+</body>
+</html>
