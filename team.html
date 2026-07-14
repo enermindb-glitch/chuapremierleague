@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team — Chuka Premier League</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="nav-slot"></div>
+<div id="team-root">
+  <div class="wrap section"><div class="empty-state loading-pulse">Loading team…</div></div>
+</div>
+<div id="footer-slot"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="standings.js"></script>
+<script src="fixtures.js"></script>
+<script src="nav.js"></script>
+<script src="teams.js"></script>
+<script>loadTeamPage();</script>
+</body>
+</html>
