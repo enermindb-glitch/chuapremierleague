@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — Football Player Registration</title>
+<style>
+/* ==========================================================
+   FOOTBALL PLAYER REGISTRATION — visual identity
+   "Engineering blueprint" theme — grid-paper navy background,
+   copper accent, spec-sheet numbered sections, mono labels.
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --soil:      #10243E;
+  --soil-dark: #0B1B2B;
+  --cream:     #10243E;
+  --gold:      #C97B3D;
+  --maroon:    #B5672E;
+  --ink:       #E8EEF2;
+  --muted:     rgba(232,238,242,0.65);
+  --line:      rgba(232,238,242,0.25);
+  --blueprint-line: #4C86AE;
+  --ok:        #3F8F5F;
+  --warn:      #B4453A;
+  --radius:    0px;
+  --shadow:    none;
+  --wash:      rgba(232,238,242,0.04);
+  --wash-2:    rgba(232,238,242,0.07);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'IBM Plex Sans', sans-serif;
+  background:
+    repeating-linear-gradient(0deg, rgba(76,134,174,0.14) 0px, rgba(76,134,174,0.14) 1px, transparent 1px, transparent 32px),
+    repeating-linear-gradient(90deg, rgba(76,134,174,0.14) 0px, rgba(76,134,174,0.14) 1px, transparent 1px, transparent 32px),
+    var(--cream);
+  color:var(--ink);
+  line-height:1.5;
+}
+h1,h2,h3,.display{
+  font-family:'Space Grotesk', sans-serif;
+  font-weight:700;
+  letter-spacing:-0.01em;
+  margin:0 0 0.4em 0;
+  color:var(--ink);
+}
+p{margin:0 0 1em 0;}
+a{color:var(--gold);}
+
+header.site{
+  background:rgba(16,36,62,0.92);
+  color:var(--ink);
+  padding:18px 24px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  border-bottom:1px solid var(--line);
+}
+header.site img.logo{height:42px;width:42px;object-fit:contain;border:1px solid var(--line);background:var(--ink);padding:4px;}
+header.site .brand{display:flex;flex-direction:column;}
+header.site .brand strong{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;letter-spacing:0.02em;}
+header.site .brand span{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--blueprint-line);}
+header.site nav{margin-left:auto;display:flex;gap:18px;flex-wrap:wrap;}
+header.site nav a{
+  color:rgba(232,238,242,0.8);
+  text-decoration:none;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.78rem;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  font-weight:500;
+}
+header.site nav a:hover{color:var(--gold);}
+header.site nav a.hi{color:var(--gold);}
+
+main{max-width:640px;margin:0 auto;padding:40px 20px 80px;}
+
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.78rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:600;
+}
+
+.panel{
+  background:var(--wash);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:28px;
+  box-shadow:var(--shadow);
+}
+label{
+  display:block;
+  font-family:'IBM Plex Mono',monospace;
+  font-weight:500;
+  font-size:0.72rem;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  margin:16px 0 6px;
+  color:var(--blueprint-line);
+}
+label .opt{font-weight:400;color:var(--muted);font-size:0.75rem;text-transform:none;letter-spacing:0;}
+input[type=text],input[type=email],input[type=password]{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  font-size:0.95rem;
+  font-family:inherit;
+  background:rgba(232,238,242,0.05);
+  color:var(--ink);
+}
+input::placeholder{color:rgba(232,238,242,0.35);}
+input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold);}
+input[type=file]{padding:8px 0;}
+
+button, .btn{
+  display:inline-block;
+  background:var(--gold);
+  color:var(--soil-dark);
+  border:none;
+  border-radius:var(--radius);
+  padding:13px 22px;
+  font-weight:600;
+  font-size:0.85rem;
+  font-family:'IBM Plex Mono',monospace;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  cursor:pointer;
+  text-decoration:none;
+  margin-top:20px;
+  transition:filter .15s ease, transform .1s ease;
+}
+button:hover,.btn:hover{filter:brightness(1.1);}
+button:active,.btn:active{transform:translateY(1px);}
+button:disabled{opacity:0.5;cursor:not-allowed;}
+
+.msg{padding:12px 14px;border-radius:var(--radius);font-size:0.9rem;margin-top:16px;display:none;border:1px solid transparent;}
+.msg.show{display:block;}
+.msg.ok{background:rgba(63,143,95,0.12);color:var(--ok);border-color:rgba(63,143,95,0.4);}
+.msg.err{background:rgba(180,69,58,0.12);color:var(--warn);border-color:rgba(180,69,58,0.4);}
+
+.member-id{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:700;
+  font-size:1.6rem;
+  color:var(--gold);
+  letter-spacing:0.03em;
+}
+
+.avatar-preview-wrap{margin-top:10px;text-align:center;}
+
+.pw-wrap{position:relative;}
+.pw-wrap input{padding-right:70px;}
+.pw-toggle{
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--muted);
+  margin:0;
+  padding:5px 10px;
+  font-size:0.65rem;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  font-family:'IBM Plex Mono',monospace;
+  cursor:pointer;
+}
+.pw-toggle:hover{color:var(--gold);border-color:var(--gold);filter:none;}
+.avatar-preview{
+  width:96px;height:96px;border-radius:50%;object-fit:cover;
+  border:2px solid var(--gold);
+  background:var(--soil-dark);
+  display:none;
+  margin:0 auto;
+}
+.avatar-fallback{
+  width:96px;height:96px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.8rem;color:var(--gold);
+  border:2px dashed var(--line);
+  background:var(--soil-dark);
+  margin:0 auto;
+}
+
+.tabs{display:flex;gap:6px;margin-bottom:24px;}
+.tabs button{
+  flex:1;
+  margin:0;
+  background:transparent;
+  color:var(--ink);
+  border:1px solid var(--line);
+}
+.tabs button.active{background:var(--gold);color:var(--soil-dark);border-color:var(--gold);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.75rem;
+  padding:28px 20px 50px;
+  border-top:1px solid var(--line);
+}
+
+@media(max-width:640px){
+  header.site{flex-wrap:wrap;}
+  header.site nav{margin-left:0;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <img class="logo" id="siteLogo" alt="Club logo" style="display:none;">
+  <div class="brand"><strong>Football Player Registration</strong><span>Player sign-up</span></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="register.html" class="hi">Register / Login</a>
+    <a href="account.html" id="navAccount">My account</a>
+  </nav>
+</header>
+
+<main>
+  <p class="eyebrow" style="margin-bottom:8px;">Sheet 01 — Player Access</p>
+  <h1 id="pageTitle">Register as a player</h1>
+  <p id="pageSub">Fill in your details below to join. Add a profile photo so teammates and coaches can recognize you, and set a password so you can log in later.</p>
+
+  <div class="tabs">
+    <button type="button" id="tabRegisterBtn" class="active">Register</button>
+    <button type="button" id="tabLoginBtn">Login</button>
+  </div>
+
+  <div class="panel">
+
+    <!-- ===== REGISTER ===== -->
+    <div id="tabRegister" class="tab-panel active">
+      <form id="regForm">
+        <label>Full name</label>
+        <input type="text" id="fullName" required>
+
+        <label>Email</label>
+        <input type="email" id="email" required>
+
+        <label>Profile photo</label>
+        <input type="file" id="image" accept="image/*">
+        <div class="avatar-preview-wrap">
+          <img id="avatarPreview" class="avatar-preview" alt="Preview">
+          <div id="avatarFallback" class="avatar-fallback">?</div>
+        </div>
+
+        <label>Set a password</label>
+        <div class="pw-wrap">
+          <input type="password" id="password" minlength="4" placeholder="At least 4 characters" required>
+          <button type="button" class="pw-toggle" data-target="password">Show</button>
+        </div>
+
+        <button type="submit" id="submitBtn">Register</button>
+        <div class="msg" id="msg"></div>
+      </form>
+
+      <div id="successBox" style="display:none;text-align:center;">
+        <h2>You're registered 🎉</h2>
+        <p>Your player number is:</p>
+        <div class="member-id" id="memberIdOut"></div>
+        <p>Save this number and your password — you'll use them to log in to <b>My account</b>.</p>
+        <a class="btn" href="account.html">Go to My account →</a>
+      </div>
+    </div>
+
+    <!-- ===== LOGIN ===== -->
+    <div id="tabLogin" class="tab-panel">
+      <form id="loginForm">
+        <label>Email</label>
+        <input type="email" id="loginEmail" required>
+
+        <label>Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="loginPassword" required>
+          <button type="button" class="pw-toggle" data-target="loginPassword">Show</button>
+        </div>
+
+        <button type="submit" id="loginBtn">Login</button>
+        <div class="msg" id="loginMsg"></div>
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<footer>Football Player Registration</footer>
+
+
+<script>
+// ✅ Point this at your deployed backend (Apps Script, or your own API)
+const API_URL = "https://script.google.com/macros/s/PASTE_YOUR_DEPLOYMENT_ID_HERE/exec";
+
+// ✅ Club logo (optional)
+const LOGO_URL = "";
+
+function loadLogo() {
+  const el = document.getElementById('siteLogo');
+  if (el && LOGO_URL && !LOGO_URL.startsWith('PASTE_')) {
+    el.src = LOGO_URL;
+    el.style.display = 'block';
+  }
+}
+document.addEventListener('DOMContentLoaded', loadLogo);
+
+async function callApi(action, payload = {}) {
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoids CORS preflight on Apps Script
+    body: JSON.stringify({ action, payload })
+  });
+  return res.json();
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function initials(name) {
+  return String(name || '?').trim().split(/\s+/).slice(0,2).map(w => w[0] || '').join('').toUpperCase();
+}
+
+// ---- player session (used by account.html, and to prefill other pages) ----
+function getMemberSession() {
+  const raw = sessionStorage.getItem('fpr_player_session');
+  return raw ? JSON.parse(raw) : null;
+}
+function setMemberSession(session) {
+  sessionStorage.setItem('fpr_player_session', JSON.stringify(session));
+}
+function clearMemberSession() {
+  sessionStorage.removeItem('fpr_player_session');
+}
+
+function reflectAccountNav() {
+  const link = document.getElementById('navAccount');
+  if (!link) return;
+  const session = getMemberSession();
+  if (session) {
+    link.textContent = 'My account (' + session.fullName.split(' ')[0] + ')';
+  }
+}
+document.addEventListener('DOMContentLoaded', reflectAccountNav);
+</script>
+<script>
+const form = document.getElementById('regForm');
+const msg = document.getElementById('msg');
+const submitBtn = document.getElementById('submitBtn');
+const imageInput = document.getElementById('image');
+const avatarPreview = document.getElementById('avatarPreview');
+const avatarFallback = document.getElementById('avatarFallback');
+const fullNameInput = document.getElementById('fullName');
+
+function refreshFallback() {
+  avatarFallback.textContent = initials(fullNameInput.value) || '?';
+}
+fullNameInput.addEventListener('input', refreshFallback);
+refreshFallback();
+
+imageInput.addEventListener('change', () => {
+  const file = imageInput.files[0];
+  if (!file) {
+    avatarPreview.style.display = 'none';
+    avatarFallback.style.display = 'flex';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    avatarPreview.src = reader.result;
+    avatarPreview.style.display = 'block';
+    avatarFallback.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+// ---- show/hide password ----
+document.querySelectorAll('.pw-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = document.getElementById(btn.dataset.target);
+    if (!input) return;
+    const isHidden = input.type === 'password';
+    input.type = isHidden ? 'text' : 'password';
+    btn.textContent = isHidden ? 'Hide' : 'Show';
+  });
+});
+
+function showMsg(text, ok) {
+  msg.textContent = text;
+  msg.className = 'msg show ' + (ok ? 'ok' : 'err');
+}
+
+// ---- tab switching ----
+const tabRegisterBtn = document.getElementById('tabRegisterBtn');
+const tabLoginBtn = document.getElementById('tabLoginBtn');
+const tabRegister = document.getElementById('tabRegister');
+const tabLogin = document.getElementById('tabLogin');
+const pageTitle = document.getElementById('pageTitle');
+const pageSub = document.getElementById('pageSub');
+
+function activateTab(tab) {
+  const isRegister = tab === 'register';
+  tabRegisterBtn.classList.toggle('active', isRegister);
+  tabLoginBtn.classList.toggle('active', !isRegister);
+  tabRegister.classList.toggle('active', isRegister);
+  tabLogin.classList.toggle('active', !isRegister);
+  pageTitle.textContent = isRegister ? 'Register as a player' : 'Log in to your account';
+  pageSub.textContent = isRegister
+    ? "Fill in your details below to join. Add a profile photo so teammates and coaches can recognize you, and set a password so you can log in later."
+    : "Enter the email and password you used when you registered.";
+}
+tabRegisterBtn.addEventListener('click', () => activateTab('register'));
+tabLoginBtn.addEventListener('click', () => activateTab('login'));
+
+// ---- login form ----
+const loginForm = document.getElementById('loginForm');
+const loginMsg = document.getElementById('loginMsg');
+const loginBtn = document.getElementById('loginBtn');
+
+function showLoginMsg(text, ok) {
+  loginMsg.textContent = text;
+  loginMsg.className = 'msg show ' + (ok ? 'ok' : 'err');
+}
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  loginBtn.disabled = true;
+  loginBtn.textContent = 'Logging in…';
+
+  try {
+    const payload = {
+      email: document.getElementById('loginEmail').value.trim(),
+      password: document.getElementById('loginPassword').value
+    };
+    const res = await callApi('login', payload);
+    if (res.ok) {
+      setMemberSession({
+        fullName: res.fullName || res.memberFullName || '',
+        email: payload.email,
+        memberId: res.memberId
+      });
+      showLoginMsg('Logged in! Redirecting…', true);
+      window.location.href = 'account.html';
+    } else {
+      showLoginMsg(res.error || 'Invalid email or password.', false);
+    }
+  } catch (err) {
+    showLoginMsg('Network error: ' + err.message, false);
+  } finally {
+    loginBtn.disabled = false;
+    loginBtn.textContent = 'Login';
+  }
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting…';
+
+  try {
+    const imageFile = imageInput.files[0];
+    let imageBase64 = '', imageFileName = '';
+    if (imageFile) {
+      imageBase64 = await fileToBase64(imageFile);
+      imageFileName = imageFile.name;
+    }
+
+    const payload = {
+      fullName: fullNameInput.value.trim(),
+      email: document.getElementById('email').value.trim(),
+      password: document.getElementById('password').value,
+      imageBase64, imageFileName
+    };
+
+    const res = await callApi('register', payload);
+    if (res.ok) {
+      form.style.display = 'none';
+      document.getElementById('successBox').style.display = 'block';
+      document.getElementById('memberIdOut').textContent = res.memberId;
+      setMemberSession({ fullName: payload.fullName, email: payload.email, memberId: res.memberId });
+    } else {
+      showMsg(res.error || 'Something went wrong.', false);
+    }
+  } catch (err) {
+    showMsg('Network error: ' + err.message, false);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Register';
+  }
+});
+</script>
+</body>
+</html>
