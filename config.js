@@ -39,7 +39,7 @@ const CPL_CONFIG = {
   storageBucket: "chuapremierleague.firebasestorage.app",
   messagingSenderId: "618726369358",
   appId: "1:618726369358:web:228780f3669b27f2877b1f",
-  measurementId: "G-NK38PPZYNX"
+  measurementId: "G-NK38PPZYNX",
   },
 
   season: "2026",
