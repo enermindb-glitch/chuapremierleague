@@ -33,12 +33,13 @@ const CPL_CONFIG = {
   // ---- Firebase project config ----
   // From Firebase Console > Project Settings > General > Your apps > SDK setup
   firebase: {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: "",
+  apiKey: "AIzaSyBest1omLXb3Gshh1DQSWvSkl0M4ErlOnQ",
+  authDomain: "chuapremierleague.firebaseapp.com",
+  projectId: "chuapremierleague",
+  storageBucket: "chuapremierleague.firebasestorage.app",
+  messagingSenderId: "618726369358",
+  appId: "1:618726369358:web:228780f3669b27f2877b1f",
+  measurementId: "G-NK38PPZYNX"
   },
 
   season: "2026",
