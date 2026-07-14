@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Player Login — Chuka Premier League</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="nav-slot"></div>
+
+<div class="wrap section" style="max-width:480px">
+  <div class="section-head"><h2 class="mt-0">Player Login</h2></div>
+
+  <div id="not-configured" class="empty-state" style="display:none">
+    Player accounts aren't connected yet. Add your Firebase project keys to <code>config.js</code> to enable login.
+  </div>
+
+  <form id="login-form">
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" required autocomplete="email">
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" required autocomplete="current-password">
+    </div>
+    <div id="login-error" class="form-note" style="color:var(--red-dark)"></div>
+    <button type="submit" class="btn btn-primary">Log in</button>
+  </form>
+
+  <p style="margin-top:20px">No account yet? <a href="signup.html" style="color:var(--pitch);font-weight:600">Sign up here</a>.</p>
+</div>
+
+<div id="footer-slot"></div>
+
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script>
+if (!CPL_CONFIG.firebase.apiKey) {
+  document.getElementById('not-configured').style.display = 'block';
+  document.getElementById('login-form').style.display = 'none';
+}
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+
+  const result = await cplLogin(email, password);
+  if (result.error === 'not_configured') {
+    document.getElementById('not-configured').style.display = 'block';
+  } else if (result.error) {
+    errEl.textContent = 'Login failed — check your email and password and try again.';
+  } else {
+    window.location.href = 'player.html?id=' + result.user.uid;
+  }
+});
+</script>
+</body>
+</html>
