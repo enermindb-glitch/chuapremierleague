@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify Player — Chuka Premier League</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="nav-slot"></div>
+
+<div class="wrap section" style="max-width:480px">
+  <div class="section-head"><h2 class="mt-0">Player Verification</h2></div>
+  <p class="muted">Scanned from a player's CPL card. Shows registration status only — no payment or contact details.</p>
+  <div id="verify-result"></div>
+</div>
+
+<div id="footer-slot"></div>
+
+<script src="config.js"></script>
+<script src="verify.js"></script>
+<script src="nav.js"></script>
+<script>
+(() => {
+  const params = new URLSearchParams(window.location.search);
+  const cpl = params.get('cpl');
+  loadVerification(cpl, document.getElementById('verify-result'));
+})();
+</script>
+</body>
+</html>
