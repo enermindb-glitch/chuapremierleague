@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Player Signup — Chuka Premier League</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="nav-slot"></div>
+
+<div class="wrap section" style="max-width:520px">
+  <div class="section-head"><h2 class="mt-0">Player Signup</h2></div>
+  <p class="muted">Create your account to manage your own profile photo and bio. Your official registration, payment, and CPL number are handled separately by league admins once your 100 KES registration fee is confirmed.</p>
+
+  <div id="not-configured" class="empty-state" style="display:none">
+    Player accounts aren't connected yet. Add your Firebase project keys to <code>config.js</code> to enable signup.
+  </div>
+
+  <form id="signup-form">
+    <div class="field">
+      <label for="name">Full name</label>
+      <input type="text" id="name" required>
+    </div>
+    <div class="field">
+      <label for="league">League</label>
+      <select id="league" required>
+        <option value="">Select league</option>
+        <option value="A">League A</option>
+        <option value="B">League B</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="team">Team</label>
+      <input type="text" id="team" placeholder="e.g. Chuka Town FC" required>
+    </div>
+    <div class="field">
+      <label for="position">Position</label>
+      <select id="position" required>
+        <option value="">Select position</option>
+        <option>Goalkeeper</option>
+        <option>Defender</option>
+        <option>Midfielder</option>
+        <option>Forward</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" required autocomplete="email">
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" minlength="6" required autocomplete="new-password">
+    </div>
+    <div id="signup-error" class="form-note" style="color:var(--red-dark)"></div>
+    <button type="submit" class="btn btn-primary">Create account</button>
+  </form>
+
+  <p style="margin-top:20px">Already have an account? <a href="login.html" style="color:var(--pitch);font-weight:600">Log in</a>.</p>
+</div>
+
+<div id="footer-slot"></div>
+
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script>
+if (!CPL_CONFIG.firebase.apiKey) {
+  document.getElementById('not-configured').style.display = 'block';
+  document.getElementById('signup-form').style.display = 'none';
+}
+
+document.getElementById('signup-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errEl = document.getElementById('signup-error');
+  errEl.textContent = '';
+
+  const profile = {
+    name: document.getElementById('name').value,
+    league: document.getElementById('league').value,
+    team: document.getElementById('team').value,
+    position: document.getElementById('position').value,
+  };
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  const result = await cplSignup(email, password, profile);
+  if (result.error === 'not_configured') {
+    document.getElementById('not-configured').style.display = 'block';
+  } else if (result.error) {
+    errEl.textContent = 'Signup failed — that email may already be registered, or the password is too short.';
+  } else {
+    window.location.href = 'player.html?id=' + result.user.uid;
+  }
+});
+</script>
+</body>
+</html>
