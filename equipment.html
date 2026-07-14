@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equipment — Chuka Premier League</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="nav-slot"></div>
+
+<div class="hero" style="padding:48px 0">
+  <div class="wrap">
+    <div class="eyebrow">KIT &amp; MATCHDAY EQUIPMENT</div>
+    <h1 style="max-width:none">Equipment</h1>
+    <p class="lede">Match balls, referee kits, first-aid supplies, and the partners who help provide them.</p>
+  </div>
+</div>
+
+<div class="wrap section">
+  <div id="equipment-list" class="grid-3"></div>
+</div>
+
+<div id="footer-slot"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="nav.js"></script>
+<script>
+(async () => {
+  const equipment = await CPL_DATA.getEquipment();
+  const el = document.getElementById('equipment-list');
+  if (!equipment.length) {
+    el.className = '';
+    el.innerHTML = '<div class="empty-state">No equipment information published yet.</div>';
+    return;
+  }
+  el.innerHTML = equipment.map(e => `
+    <div class="card">
+      <span class="chip chip-active">${e.category || 'Equipment'}</span>
+      <h3 style="margin-top:12px">${e.item}</h3>
+      <p class="muted" style="margin-bottom:6px">Quantity: <strong>${e.quantity}</strong> &middot; Condition: ${e.condition}</p>
+      ${e.sponsor ? `<p style="color:var(--pitch);font-weight:600">Provided by ${e.sponsor}</p>` : ''}
+    </div>
+  `).join('');
+})();
+</script>
+</body>
+</html>
